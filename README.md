@@ -12,7 +12,7 @@ A student skill-swap and collaboration hub built specifically for **Bicol Univer
 - ✅ **Comprehensive Token & Rewards System**: Gamification and engagement
 - ✅ **Dark Mode Implementation**: Complete theme system
 - ✅ **Mobile-Responsive Design**: Optimized for all devices
-- ✅ **Database Integration**: Prisma with SQLite and demo data
+- ✅ **Database Integration**: Prisma with PostgreSQL and demo data
 - ✅ **Development Server**: Running successfully at `http://localhost:3000`
 
 ## 🌟 Features
@@ -85,11 +85,17 @@ A student skill-swap and collaboration hub built specifically for **Bicol Univer
    npm install
    ```
 
-3. **Set up the database**
+3. **Set up PostgreSQL Database**
 
+   **Install PostgreSQL** (see [POSTGRESQL_SETUP.md](POSTGRESQL_SETUP.md) for detailed instructions):
+   - Install PostgreSQL locally or use Docker
+   - Create database: `buconnect_db`
+   - Update DATABASE_URL in `.env` file
+
+   **Initialize the database:**
    ```bash
    npx prisma generate
-   npx prisma db push
+   npx prisma migrate dev --name init
    npm run db:seed
    ```
 
@@ -98,7 +104,7 @@ A student skill-swap and collaboration hub built specifically for **Bicol Univer
    Copy `.env.example` to `.env` and update:
 
    ```env
-   DATABASE_URL="file:./dev.db"
+   DATABASE_URL="postgresql://postgres:yourpassword@localhost:5432/buconnect_db?schema=public"
    NEXTAUTH_SECRET="your-secret-key-here"
    NEXTAUTH_URL="http://localhost:3000"
    ```
@@ -146,7 +152,7 @@ For testing purposes, you can use these pre-seeded accounts:
 
 - **API**: Next.js API Routes with comprehensive error handling
 - **Authentication**: NextAuth.js with Credentials Provider and enhanced profile flow
-- **Database**: SQLite with Prisma ORM (Production-ready schema)
+- **Database**: PostgreSQL with Prisma ORM (Production-ready schema)
 - **Real-time Features**: Dynamic notification system with database integration
 - **Security**: bcryptjs password hashing with role-based access control
 - **Token System**: Custom BU Tokens and rewards management
@@ -371,9 +377,11 @@ src/
 ### Database Operations
 
 - `npx prisma generate` - Generate Prisma client
-- `npx prisma db push` - Push schema to database
+- `npx prisma migrate dev` - Create and apply migrations (PostgreSQL)
+- `npx prisma migrate reset` - Reset database and apply migrations
+- `npx prisma db push` - Push schema changes without migrations
 - `npx prisma studio` - Open Prisma Studio GUI
-- `npx prisma migrate dev` - Create and apply migrations
+- `npx prisma db seed` - Seed database with demo data
 
 ### Component Development
 
